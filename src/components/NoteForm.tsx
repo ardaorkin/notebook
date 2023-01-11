@@ -48,7 +48,12 @@ function NoteForm(
           <Input ref={noteRef} maxLength={144} />
         </Item>
         <Item name="note">
-          <Input.TextArea maxLength={255} rows={6} spellCheck />
+          <Input.TextArea
+            maxLength={255}
+            rows={6}
+            spellCheck
+            style={{ resize: "none" }}
+          />
         </Item>
         <Item name="date">
           <DatePicker format={"YYYY-MM-DD"} style={{ width: "100%" }} />
