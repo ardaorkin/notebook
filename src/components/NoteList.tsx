@@ -8,6 +8,11 @@ export default function NoteList({
 }: INoteListProps): React.ReactElement {
   const columns = [
     {
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+    },
+    {
       title: "Note",
       dataIndex: "note",
       key: "note",

@@ -1,10 +1,10 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
 import { INote, INoteAction } from "./types/note";
 import { Dayjs } from "dayjs";
-import { Button } from "antd";
+import { Button, FormInstance } from "antd";
 
 const reducer = (state: INote[], action: INoteAction): INote[] => {
   switch (action.type) {
@@ -23,6 +23,7 @@ const reducer = (state: INote[], action: INoteAction): INote[] => {
 };
 
 const App: React.FC = () => {
+  const formRef = useRef<FormInstance>(null);
   const [isVisible, toggleVisible] = useReducer((state) => !state, false);
   const [notes, dispatchNotes] = useReducer(
     reducer,
@@ -33,15 +34,25 @@ const App: React.FC = () => {
     localStorage.setItem("notes", JSON.stringify([...notes]));
   }, [notes]);
 
-  const onFinish = (data: { note: string; date: Dayjs }): void => {
-    const formattedDate = data.date.format("YYYY-MM-DD").toString();
-    const noteData = { note: data.note, date: formattedDate };
+  const onFinish = (data: {
+    title: string;
+    note: string;
+    date: Dayjs;
+  }): void => {
+    const { title, note, date } = data;
+    const formattedDate = date.format("YYYY-MM-DD").toString();
+    const noteData = {
+      title,
+      note,
+      date: formattedDate,
+    };
     dispatchNotes({
       type: "ADD_NOTE",
       payload: noteData,
     });
     localStorage.setItem("notes", JSON.stringify([...notes, noteData]));
     toggleVisible(); //gonna update isVisible state as false
+    formRef.current?.resetFields();
   };
 
   const onDelete = (id: number) => {
@@ -57,6 +68,7 @@ const App: React.FC = () => {
         onFinish={onFinish}
         isVisible={isVisible}
         onCancel={toggleVisible}
+        ref={formRef}
       />
       <Button
         type="primary"

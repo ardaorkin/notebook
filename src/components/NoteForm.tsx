@@ -1,13 +1,20 @@
 import { useEffect, useRef } from "react";
 import * as React from "react";
-import { Button, DatePicker, Form, Input, InputRef, Modal } from "antd";
+import {
+  Button,
+  DatePicker,
+  Form,
+  FormInstance,
+  Input,
+  InputRef,
+  Modal,
+} from "antd";
 import { INoteFormProps } from "../types/note";
 
-export default function NoteForm({
-  onFinish,
-  isVisible,
-  onCancel,
-}: INoteFormProps): React.ReactElement {
+function NoteForm(
+  { onFinish, isVisible, onCancel }: INoteFormProps,
+  ref: React.ForwardedRef<FormInstance>
+) {
   const { Item } = Form;
   const noteRef = useRef<InputRef>(null);
 
@@ -31,12 +38,13 @@ export default function NoteForm({
       ]}
     >
       <Form
+        ref={ref}
         id="newNoteForm"
         onFinish={onFinish}
         layout="vertical"
         style={{ marginTop: "5%" }}
       >
-        <Item name="header">
+        <Item name="title">
           <Input ref={noteRef} />
         </Item>
         <Item name="note">
@@ -49,3 +57,5 @@ export default function NoteForm({
     </Modal>
   );
 }
+
+export default React.forwardRef(NoteForm);

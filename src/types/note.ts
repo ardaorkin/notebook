@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 
 export interface INote {
+  title: string;
   note: string;
   date: string;
 }
