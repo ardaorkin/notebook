@@ -7,6 +7,7 @@ export interface INote {
 
 export interface INoteListProps {
   notes: INote[];
+  onDelete: (id: number) => void;
 }
 
 export interface INoteFormProps {
