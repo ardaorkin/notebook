@@ -25,7 +25,7 @@ function NoteForm(
   return (
     <Modal
       onCancel={onCancel}
-      visible={isVisible}
+      open={isVisible}
       footer={[
         <Button
           form="newNoteForm"
