@@ -4,6 +4,7 @@ import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
 import { INote, INoteAction } from "./types/note";
 import { Dayjs } from "dayjs";
+import { Button } from "antd";
 
 const reducer = (state: INote[], action: INoteAction): INote[] => {
   switch (action.type) {
@@ -22,6 +23,7 @@ const reducer = (state: INote[], action: INoteAction): INote[] => {
 };
 
 const App: React.FC = () => {
+  const [isVisible, toggleVisible] = useReducer((state) => !state, false);
   const [notes, dispatchNotes] = useReducer(
     reducer,
     JSON.parse(localStorage.getItem("notes") || "[]")
@@ -39,6 +41,7 @@ const App: React.FC = () => {
       payload: noteData,
     });
     localStorage.setItem("notes", JSON.stringify([...notes, noteData]));
+    toggleVisible(); //gonna update isVisible state as false
   };
 
   const onDelete = (id: number) => {
@@ -49,11 +52,21 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="App">
-      <NoteForm onFinish={onFinish} />
-      <br></br>
+    <>
+      <NoteForm
+        onFinish={onFinish}
+        isVisible={isVisible}
+        onCancel={toggleVisible}
+      />
+      <Button
+        type="primary"
+        onClick={toggleVisible}
+        style={{ marginBottom: 5 }}
+      >
+        Add New Note
+      </Button>
       <NoteList notes={notes} onDelete={onDelete} />
-    </div>
+    </>
   );
 };
 

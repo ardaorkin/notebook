@@ -12,6 +12,8 @@ export interface INoteListProps {
 
 export interface INoteFormProps {
   onFinish: (data: any) => void;
+  isVisible: boolean;
+  onCancel: (data: any) => void;
 }
 
 export interface INoteAction {
