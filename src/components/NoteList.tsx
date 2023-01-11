@@ -1,5 +1,5 @@
 import * as React from "react";
-import { INoteListProps } from "../types/note";
+import { INoteListProps } from "../types";
 import { Button, Table } from "antd";
 
 export default function NoteList({

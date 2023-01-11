@@ -9,7 +9,7 @@ import {
   InputRef,
   Modal,
 } from "antd";
-import { INoteFormProps } from "../types/note";
+import { INoteFormProps } from "../types";
 
 function NoteForm(
   { onFinish, isVisible, onCancel }: INoteFormProps,

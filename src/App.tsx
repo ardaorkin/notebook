@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { INote, INoteAction, INoteRow } from "./types/note";
+import { INote, INoteAction, INoteRow } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
 
