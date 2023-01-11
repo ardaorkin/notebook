@@ -5,6 +5,7 @@ import { Button, Table } from "antd";
 export default function NoteList({
   notes,
   onDelete,
+  onClickRow,
 }: INoteListProps): React.ReactElement {
   const columns = [
     {
@@ -16,6 +17,7 @@ export default function NoteList({
       title: "Note",
       dataIndex: "note",
       key: "note",
+      ellipsis: true,
     },
     {
       title: "Date",
@@ -30,12 +32,29 @@ export default function NoteList({
         record: any,
         index: number
       ): React.ReactElement => (
-        <Button danger type="primary" onClick={() => onDelete(index)}>
+        <Button
+          danger
+          type="primary"
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete(index);
+          }}
+        >
           Delete
         </Button>
       ),
     },
   ];
 
-  return <Table dataSource={notes} columns={columns} bordered />;
+  return (
+    <Table
+      dataSource={notes}
+      columns={columns}
+      bordered
+      rowKey={"title"}
+      onRow={(record, rowIndex) => {
+        return { onClick: () => onClickRow({ record, rowIndex }) };
+      }}
+    />
+  );
 }

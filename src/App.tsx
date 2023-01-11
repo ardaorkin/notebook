@@ -1,9 +1,9 @@
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { INote, INoteAction } from "./types/note";
-import { Dayjs } from "dayjs";
+import { INote, INoteAction, INoteRow } from "./types/note";
+import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
 
 const reducer = (state: INote[], action: INoteAction): INote[] => {
@@ -12,6 +12,11 @@ const reducer = (state: INote[], action: INoteAction): INote[] => {
       return action.payload;
     case "ADD_NOTE":
       return [action.payload, ...state];
+    case "UPDATE_NOTE":
+      const copy = [...state];
+      const { index, ...rest } = action.payload;
+      copy[index] = rest;
+      return copy;
     case "DELETE_NOTE":
       return [
         ...state.slice(0, action.payload),
@@ -24,6 +29,8 @@ const reducer = (state: INote[], action: INoteAction): INote[] => {
 
 const App: React.FC = () => {
   const formRef = useRef<FormInstance>(null);
+  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [updateIndex, setUpdateIndex] = useState<number | undefined>(0);
   const [isVisible, toggleVisible] = useReducer((state) => !state, false);
   const [notes, dispatchNotes] = useReducer(
     reducer,
@@ -34,40 +41,62 @@ const App: React.FC = () => {
     localStorage.setItem("notes", JSON.stringify([...notes]));
   }, [notes]);
 
-  const onFinish = (data: {
+  const handleFinish = (data: {
     title: string;
     note: string;
     date: Dayjs;
   }): void => {
-    const { title, note, date } = data;
+    const { date, ...rest } = data;
     const formattedDate = date.format("YYYY-MM-DD").toString();
+
     const noteData = {
-      title,
-      note,
+      ...rest,
       date: formattedDate,
+      ...(isUpdate ? { index: updateIndex } : {}),
     };
+
     dispatchNotes({
-      type: "ADD_NOTE",
+      type: isUpdate ? "UPDATE_NOTE" : "ADD_NOTE",
       payload: noteData,
     });
-    localStorage.setItem("notes", JSON.stringify([...notes, noteData]));
+
     toggleVisible(); //gonna update isVisible state as false
+    setIsUpdate(false);
     formRef.current?.resetFields();
   };
 
-  const onDelete = (id: number) => {
+  const handleDelete = (id: number) => {
     dispatchNotes({
       type: "DELETE_NOTE",
       payload: id,
     });
   };
 
+  const togglePromise = () =>
+    new Promise((resolve) => {
+      resolve(toggleVisible());
+    });
+
+  const handleClickRow = async (data: INoteRow) => {
+    await togglePromise();
+    setIsUpdate(true);
+    const { date, ...rest } = data.record;
+    setUpdateIndex(data.rowIndex);
+    const dateObj = dayjs(date, "YYYY-MM-DD");
+    formRef.current?.setFieldsValue({ ...rest, date: dateObj });
+  };
+
+  const handleCancel = () => {
+    toggleVisible();
+    formRef.current?.resetFields();
+  };
+
   return (
     <>
       <NoteForm
-        onFinish={onFinish}
+        onFinish={handleFinish}
         isVisible={isVisible}
-        onCancel={toggleVisible}
+        onCancel={handleCancel}
         ref={formRef}
       />
       <Button
@@ -77,7 +106,11 @@ const App: React.FC = () => {
       >
         Add New Note
       </Button>
-      <NoteList notes={notes} onDelete={onDelete} />
+      <NoteList
+        notes={notes}
+        onDelete={handleDelete}
+        onClickRow={handleClickRow}
+      />
     </>
   );
 };
