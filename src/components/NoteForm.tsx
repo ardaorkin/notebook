@@ -45,10 +45,10 @@ function NoteForm(
         style={{ marginTop: "5%" }}
       >
         <Item name="title">
-          <Input ref={noteRef} />
+          <Input ref={noteRef} maxLength={144} />
         </Item>
         <Item name="note">
-          <Input.TextArea />
+          <Input.TextArea maxLength={255} rows={6} spellCheck />
         </Item>
         <Item name="date">
           <DatePicker format={"YYYY-MM-DD"} style={{ width: "100%" }} />
