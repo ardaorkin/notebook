@@ -5,6 +5,7 @@ import NoteList from "./components/NoteList";
 import { INote, INoteAction, INoteRow } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
+import SearchBar from "./components/SearchBar";
 
 const reducer = (state: INote[], action: INoteAction): INote[] => {
   switch (action.type) {
@@ -32,6 +33,7 @@ const App: React.FC = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateIndex, setUpdateIndex] = useState<number | undefined>(0);
   const [isVisible, toggleVisible] = useReducer((state) => !state, false);
+  const [searchParam, setSearchParam] = useState<string>("");
   const [notes, dispatchNotes] = useReducer(
     reducer,
     JSON.parse(localStorage.getItem("notes") || "[]")
@@ -106,8 +108,9 @@ const App: React.FC = () => {
       >
         Add New Note
       </Button>
+      <SearchBar onSearch={setSearchParam} />
       <NoteList
-        notes={notes}
+        notes={notes.filter((note) => note.title.includes(searchParam))}
         onDelete={handleDelete}
         onClickRow={handleClickRow}
       />

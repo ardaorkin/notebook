@@ -24,3 +24,7 @@ export interface INoteAction {
   type: string;
   payload: any;
 }
+
+export interface ISearchBarProps {
+  onSearch: (value: string) => void;
+}
