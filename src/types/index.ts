@@ -29,3 +29,5 @@ export interface INoteAction {
 export interface ISearchBarProps {
   onSearch: (value: string) => void;
 }
+
+export type Dispatch = (action: INoteAction) => void;

@@ -6,27 +6,12 @@ import { INote, INoteAction, INoteRow } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
-
-const reducer = (state: INote[], action: INoteAction): INote[] => {
-  switch (action.type) {
-    case "GET_NOTES":
-      return action.payload;
-    case "ADD_NOTE":
-      return [action.payload, ...state];
-    case "UPDATE_NOTE":
-      const copy = [...state];
-      const { index, ...rest } = action.payload;
-      copy[index] = rest;
-      return copy;
-    case "DELETE_NOTE":
-      return [
-        ...state.slice(0, action.payload),
-        ...state.slice(action.payload + 1),
-      ];
-    default:
-      return state;
-  }
-};
+import { reducer } from "./reducers";
+import {
+  addNoteAction,
+  deleteNoteAction,
+  updateNoteAction,
+} from "./reducers/actions";
 
 const App: React.FC = () => {
   const formRef = useRef<FormInstance>(null);
@@ -54,24 +39,15 @@ const App: React.FC = () => {
     const noteData = {
       ...rest,
       date: formattedDate,
-      ...(isUpdate ? { index: updateIndex } : {}),
     };
 
-    dispatchNotes({
-      type: isUpdate ? "UPDATE_NOTE" : "ADD_NOTE",
-      payload: noteData,
-    });
+    isUpdate
+      ? updateNoteAction({ ...noteData, index: updateIndex }, dispatchNotes)
+      : addNoteAction(noteData, dispatchNotes);
 
-    toggleVisible(); //gonna update isVisible state as false
+    toggleVisible();
     setIsUpdate(false);
     formRef.current?.resetFields();
-  };
-
-  const handleDelete = (id: number) => {
-    dispatchNotes({
-      type: "DELETE_NOTE",
-      payload: id,
-    });
   };
 
   const togglePromise = () =>
@@ -116,7 +92,7 @@ const App: React.FC = () => {
             note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
             note.note.toLowerCase().includes(searchParam.toLowerCase())
         )}
-        onDelete={handleDelete}
+        onDelete={(id) => deleteNoteAction(id, dispatchNotes)}
         onClickRow={handleClickRow}
       />
     </>
