@@ -104,7 +104,7 @@ const App: React.FC = () => {
       <Button
         type="primary"
         onClick={toggleVisible}
-        style={{ marginBottom: 5 }}
+        style={{ marginBottom: 5, marginRight: 5 }}
       >
         Add New Note
       </Button>
