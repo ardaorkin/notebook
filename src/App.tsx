@@ -113,7 +113,8 @@ const App: React.FC = () => {
         searchParam={searchParam}
         notes={notes.filter(
           (note) =>
-            note.title.includes(searchParam) || note.note.includes(searchParam)
+            note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
+            note.note.toLowerCase().includes(searchParam.toLowerCase())
         )}
         onDelete={handleDelete}
         onClickRow={handleClickRow}
