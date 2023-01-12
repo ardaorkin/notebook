@@ -44,10 +44,10 @@ function NoteForm(
         layout="vertical"
         style={{ marginTop: "5%" }}
       >
-        <Item name="title">
+        <Item name="title" rules={[{ required: true }]}>
           <Input ref={noteRef} maxLength={144} />
         </Item>
-        <Item name="note">
+        <Item name="note" rules={[{ required: true }]}>
           <Input.TextArea
             maxLength={255}
             rows={6}
@@ -55,7 +55,7 @@ function NoteForm(
             style={{ resize: "none" }}
           />
         </Item>
-        <Item name="date">
+        <Item name="date" rules={[{ required: true }]}>
           <DatePicker format={"YYYY-MM-DD"} style={{ width: "100%" }} />
         </Item>
       </Form>
