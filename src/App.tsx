@@ -13,7 +13,7 @@ import {
   updateNoteAction,
 } from "./reducers/actions";
 
-const App: React.FC = () => {
+const App = () => {
   const formRef = useRef<FormInstance>(null);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [updateIndex, setUpdateIndex] = useState<number | undefined>(0);
