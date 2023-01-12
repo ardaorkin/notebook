@@ -110,6 +110,7 @@ const App: React.FC = () => {
       </Button>
       <SearchBar onSearch={setSearchParam} />
       <NoteList
+        searchParam={searchParam}
         notes={notes.filter(
           (note) =>
             note.title.includes(searchParam) || note.note.includes(searchParam)

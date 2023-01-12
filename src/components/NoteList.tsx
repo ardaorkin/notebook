@@ -6,18 +6,33 @@ export default function NoteList({
   notes,
   onDelete,
   onClickRow,
+  searchParam,
 }: INoteListProps): React.ReactElement {
   const columns = [
     {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      render: (text: string) => {
+        const regex = searchParam && new RegExp(searchParam, "g");
+        const content = regex
+          ? text.replace(regex, `<mark>${searchParam}</mark>`)
+          : text;
+        return <div dangerouslySetInnerHTML={{ __html: content }}></div>;
+      },
     },
     {
       title: "Note",
       dataIndex: "note",
       key: "note",
       ellipsis: true,
+      render: (text: string) => {
+        const regex = searchParam && new RegExp(searchParam, "g");
+        const content = regex
+          ? text.replace(regex, `<mark>${searchParam}</mark>`)
+          : text;
+        return <div dangerouslySetInnerHTML={{ __html: content }}></div>;
+      },
     },
     {
       title: "Date",

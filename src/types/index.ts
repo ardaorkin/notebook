@@ -12,6 +12,7 @@ export interface INoteListProps {
   notes: INote[];
   onDelete: (id: number) => void;
   onClickRow: (data: INoteRow) => void;
+  searchParam?: string;
 }
 
 export interface INoteFormProps {
