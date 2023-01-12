@@ -1,7 +1,7 @@
 import { Input } from "antd";
-import { ISearchBarProps } from "../types";
+import { SearchBarProps } from "../types";
 
-export default function SearchBar({ onSearch }: ISearchBarProps) {
+export default function SearchBar({ onSearch }: SearchBarProps) {
   return (
     <Input.Search
       placeholder="Search for notes..."

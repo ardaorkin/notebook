@@ -1,5 +1,5 @@
 import * as React from "react";
-import { INoteListProps } from "../types";
+import { NoteListProps } from "../types";
 import { Button, Table } from "antd";
 
 export default function NoteList({
@@ -7,7 +7,7 @@ export default function NoteList({
   onDelete,
   onClickRow,
   searchParam,
-}: INoteListProps): React.ReactElement {
+}: NoteListProps): React.ReactElement {
   const columns = [
     {
       title: "Title",

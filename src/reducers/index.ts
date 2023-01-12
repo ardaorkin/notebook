@@ -1,7 +1,7 @@
-import { INote, INoteAction } from "../types";
+import { Note, NoteAction } from "../types";
 import { ADD_NOTE, DELETE_NOTE, UPDATE_NOTE } from "./actionTypes";
 
-export const reducer = (state: INote[], action: INoteAction): INote[] => {
+export const reducer = (state: Note[], action: NoteAction): Note[] => {
   switch (action.type) {
     case ADD_NOTE:
       return [action.payload, ...state];

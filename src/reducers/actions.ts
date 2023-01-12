@@ -1,14 +1,14 @@
-import { Dispatch, INote } from "../types";
+import { Dispatch, Note } from "../types";
 import { ADD_NOTE, DELETE_NOTE, UPDATE_NOTE } from "./actionTypes";
 
-export const addNoteAction = (data: INote, dispatch: Dispatch) =>
+export const addNoteAction = (data: Note, dispatch: Dispatch) =>
   dispatch({
     type: ADD_NOTE,
     payload: data,
   });
 
 export const updateNoteAction = (
-  data: INote & { index: number | undefined },
+  data: Note & { index: number | undefined },
   dispatch: Dispatch
 ) =>
   dispatch({

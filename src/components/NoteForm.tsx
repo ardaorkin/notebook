@@ -9,10 +9,10 @@ import {
   InputRef,
   Modal,
 } from "antd";
-import { INoteFormProps } from "../types";
+import { NoteFormProps } from "../types";
 
 function NoteForm(
-  { onFinish, isVisible, onCancel }: INoteFormProps,
+  { onFinish, isVisible, onCancel }: NoteFormProps,
   ref: React.ForwardedRef<FormInstance>
 ) {
   const { Item } = Form;

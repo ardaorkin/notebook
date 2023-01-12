@@ -2,7 +2,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { INoteRow } from "./types";
+import { NoteRow } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
@@ -55,7 +55,7 @@ const App: React.FC = () => {
       resolve(toggleVisible());
     });
 
-  const handleClickRow = async (data: INoteRow) => {
+  const handleClickRow = async (data: NoteRow) => {
     await togglePromise();
     setIsUpdate(true);
     const { date, ...rest } = data.record;
