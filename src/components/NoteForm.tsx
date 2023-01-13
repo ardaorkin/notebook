@@ -49,6 +49,7 @@ function NoteForm(
         </Item>
         <Item name="note" rules={[{ required: true }]}>
           <Input.TextArea
+            showCount
             maxLength={255}
             rows={6}
             spellCheck
