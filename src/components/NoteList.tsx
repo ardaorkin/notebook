@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NoteListProps } from "../types";
-import { Card, Col, Row, Skeleton } from "antd";
+import { Card, Col, Row, Skeleton, Space, Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const CardExtra = ({
@@ -8,14 +8,18 @@ const CardExtra = ({
 }: {
   onClick: () => void;
 }): React.ReactElement => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    onClick();
+  };
   return (
     <DeleteOutlined
       style={{ color: "#f5222d", marginLeft: 10 }}
-      onClick={onClick}
+      onClick={handleClick}
     />
   );
 };
-
+const { Text } = Typography;
 export default function NoteList({
   notes,
   onDelete,
