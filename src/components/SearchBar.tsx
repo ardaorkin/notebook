@@ -1,7 +1,8 @@
 import { Input } from "antd";
 import { SearchBarProps } from "../types";
+import { memo } from "react";
 
-export default function SearchBar({ onSearch }: SearchBarProps) {
+function SearchBar({ onSearch }: SearchBarProps) {
   return (
     <Input.Search
       placeholder="Search for notes..."
@@ -10,3 +11,5 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     />
   );
 }
+
+export default memo(SearchBar);
