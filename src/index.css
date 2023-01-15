@@ -30,6 +30,7 @@ body {
   place-items: initial;
   min-width: 320px;
   min-height: 100vh;
+  background-color: whitesmoke;
 }
 
 button {
@@ -64,6 +65,6 @@ button:focus-visible {
   }
 }
 
-body {
-  background-color: whitesmoke;
+html {
+  overflow: hidden;
 }

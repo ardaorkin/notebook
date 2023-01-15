@@ -90,7 +90,7 @@ const App = () => {
 
   return (
     <>
-      <div style={{ position: "absolute", top: "5%" }}>
+      <div style={{ width: 345, marginBottom: 50 }}>
         <SearchBar onSearch={setSearchParam} />
       </div>
       <NoteForm
