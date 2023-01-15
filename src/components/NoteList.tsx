@@ -62,11 +62,13 @@ export default function NoteList({
   ];
 
   return (
+    /**
+     * TODO: create a uniqueID to use as value of rowKey prop
+     */
     <Table
       dataSource={notes}
       columns={columns}
       bordered
-      rowKey={"title"}
       onRow={(record, rowIndex) => {
         return { onClick: () => onClickRow({ record, rowIndex }) };
       }}
