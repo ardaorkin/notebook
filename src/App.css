@@ -1,11 +1,7 @@
 #root {
   width: 100%;
   margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  padding: 0 10rem;
 }
 
 .card {
@@ -15,7 +11,7 @@
 }
 
 h1 {
-  font-size: 272px;
+  font-size: 172px;
   background: linear-gradient(
     122deg,
     rgba(131, 58, 180, 1) 0%,
@@ -24,4 +20,5 @@ h1 {
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: lighter;
 }

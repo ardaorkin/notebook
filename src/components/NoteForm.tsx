@@ -50,7 +50,7 @@ function NoteForm(
         <Item name="note" rules={[{ required: true }]}>
           <Input.TextArea
             showCount
-            maxLength={255}
+            maxLength={1000}
             rows={6}
             spellCheck
             style={{ resize: "none" }}

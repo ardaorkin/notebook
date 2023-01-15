@@ -1,8 +1,15 @@
-import { useCallback, useEffect, useReducer, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { NoteRow } from "./types";
+import { NoteData } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { Button, FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
@@ -54,11 +61,11 @@ const App = () => {
       resolve(toggleVisible());
     });
 
-  const handleClickRow = async (data: NoteRow) => {
+  const handleClickNote = async (data: NoteData) => {
     await togglePromise();
     setIsUpdate(true);
-    const { date, ...rest } = data.record;
-    setUpdateIndex(data.rowIndex);
+    const { date, id, ...rest } = data;
+    setUpdateIndex(id);
     const dateObj = dayjs(date, "YYYY-MM-DD");
     formRef.current?.setFieldsValue({ ...rest, date: dateObj });
   };
@@ -68,50 +75,37 @@ const App = () => {
     formRef.current?.resetFields();
   }, []);
 
+  const filteredNotes = useMemo(() => {
+    const filteredResult = notes.filter((note) => {
+      const searchRegex = new RegExp(searchParam, "ig");
+      const noteTitle = note.title.toLowerCase();
+      const noteContent = note.note.toLowerCase();
+      return (
+        [noteTitle, noteContent].filter((text) => text.match(searchRegex))
+          .length > 0 && note
+      );
+    });
+    return filteredResult;
+  }, [searchParam, notes]);
+
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "start",
-          justifyContent: "start",
-          textAlign: "start",
-        }}
-      >
-        <NoteForm
-          onFinish={handleFinish}
-          isVisible={isVisible}
-          onCancel={handleCancel}
-          ref={formRef}
-        />
-        <Button
-          type="primary"
-          onClick={toggleVisible}
-          style={{ marginBottom: 5, marginRight: 5 }}
-        >
-          Add New Note
-        </Button>
+      <div style={{ position: "absolute", top: "5%" }}>
         <SearchBar onSearch={setSearchParam} />
       </div>
-      <div
-        style={{
-          width: "70%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <NoteList
-          searchParam={searchParam}
-          notes={notes.filter(
-            (note) =>
-              note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
-              note.note.toLowerCase().includes(searchParam.toLowerCase())
-          )}
-          onDelete={(id) => deleteNoteAction(id, dispatchNotes)}
-          onClickRow={handleClickRow}
-        />
-      </div>
+      <NoteForm
+        onFinish={handleFinish}
+        isVisible={isVisible}
+        onCancel={handleCancel}
+        ref={formRef}
+      />
+      <NoteList
+        onAddNewNote={toggleVisible}
+        searchParam={searchParam}
+        notes={filteredNotes}
+        onDelete={(id) => deleteNoteAction(id, dispatchNotes)}
+        onClickNote={handleClickNote}
+      />
     </>
   );
 };

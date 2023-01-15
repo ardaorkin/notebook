@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NoteListProps } from "../types";
+import { Note, NoteData, NoteListProps } from "../types";
 import { Button, Card, Col, Row, Skeleton } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -14,8 +14,9 @@ const CardExtra = ({
 export default function NoteList({
   notes,
   onDelete,
-  onClickRow,
+  onClickNote,
   searchParam,
+  onAddNewNote,
 }: NoteListProps): React.ReactElement {
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
 
@@ -25,27 +26,33 @@ export default function NoteList({
 
   if (isLoading) return <Skeleton />;
   return (
-    <Row justify={"start"} align={"middle"} gutter={12}>
-      <Col offset={1}>
+    <Row gutter={24}>
+      <Col>
         <Card
+          bordered
+          onClick={onAddNewNote}
           hoverable
           className="card"
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            overflow: "hidden",
           }}
         >
           <h1>+</h1>
         </Card>
       </Col>
-      {[...notes].map(({ title, note, date }, idx) => (
-        <Col key={idx} offset={1}>
+      {[...notes].map(({ title, note, date }, id) => (
+        <Col key={id}>
           <Card
+            bordered
+            bodyStyle={{ overflowY: "auto", height: "80%" }}
             hoverable
             title={title}
-            extra={<CardExtra onClick={() => onDelete(idx)} />}
+            extra={<CardExtra onClick={() => onDelete(id)} />}
             className="card"
+            onClick={() => onClickNote({ title, note, date, id })}
           >
             {note}
           </Card>

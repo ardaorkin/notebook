@@ -4,14 +4,12 @@ export type Note = {
   date: string;
 };
 
-export type NoteRow = {
-  record: Note;
-  rowIndex: number | undefined;
-};
+export type NoteData = Note & { id: number };
 export type NoteListProps = {
   notes: Note[];
   onDelete: (id: number) => void;
-  onClickRow: (data: NoteRow) => void;
+  onClickNote: (data: NoteData) => void;
+  onAddNewNote: () => void;
   searchParam?: string;
 };
 
