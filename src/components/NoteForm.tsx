@@ -15,6 +15,7 @@ function NoteForm(
   { onFinish, isVisible, onCancel }: NoteFormProps,
   ref: React.ForwardedRef<FormInstance>
 ) {
+  console.log("form rendering");
   const { Item } = Form;
   const noteRef = useRef<InputRef>(null);
 
@@ -64,4 +65,4 @@ function NoteForm(
   );
 }
 
-export default React.forwardRef(NoteForm);
+export default React.memo(React.forwardRef(NoteForm));

@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useRef, useState } from "react";
+import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
@@ -28,27 +28,26 @@ const App = () => {
     localStorage.setItem("notes", JSON.stringify([...notes]));
   }, [notes]);
 
-  const handleFinish = (data: {
-    title: string;
-    note: string;
-    date: Dayjs;
-  }): void => {
-    const { date, ...rest } = data;
-    const formattedDate = date.format("YYYY-MM-DD").toString();
+  const handleFinish = useCallback(
+    (data: { title: string; note: string; date: Dayjs }): void => {
+      const { date, ...rest } = data;
+      const formattedDate = date.format("YYYY-MM-DD").toString();
 
-    const noteData = {
-      ...rest,
-      date: formattedDate,
-    };
+      const noteData = {
+        ...rest,
+        date: formattedDate,
+      };
 
-    isUpdate
-      ? updateNoteAction({ ...noteData, index: updateIndex }, dispatchNotes)
-      : addNoteAction(noteData, dispatchNotes);
+      isUpdate
+        ? updateNoteAction({ ...noteData, index: updateIndex }, dispatchNotes)
+        : addNoteAction(noteData, dispatchNotes);
 
-    toggleVisible();
-    setIsUpdate(false);
-    formRef.current?.resetFields();
-  };
+      toggleVisible();
+      setIsUpdate(false);
+      formRef.current?.resetFields();
+    },
+    [notes, isUpdate]
+  );
 
   const togglePromise = () =>
     new Promise((resolve) => {
@@ -64,10 +63,10 @@ const App = () => {
     formRef.current?.setFieldsValue({ ...rest, date: dateObj });
   };
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     toggleVisible();
     formRef.current?.resetFields();
-  };
+  }, []);
 
   return (
     <>
