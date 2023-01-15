@@ -70,30 +70,48 @@ const App = () => {
 
   return (
     <>
-      <NoteForm
-        onFinish={handleFinish}
-        isVisible={isVisible}
-        onCancel={handleCancel}
-        ref={formRef}
-      />
-      <Button
-        type="primary"
-        onClick={toggleVisible}
-        style={{ marginBottom: 5, marginRight: 5 }}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "start",
+          justifyContent: "start",
+          textAlign: "start",
+        }}
       >
-        Add New Note
-      </Button>
-      <SearchBar onSearch={setSearchParam} />
-      <NoteList
-        searchParam={searchParam}
-        notes={notes.filter(
-          (note) =>
-            note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
-            note.note.toLowerCase().includes(searchParam.toLowerCase())
-        )}
-        onDelete={(id) => deleteNoteAction(id, dispatchNotes)}
-        onClickRow={handleClickRow}
-      />
+        <NoteForm
+          onFinish={handleFinish}
+          isVisible={isVisible}
+          onCancel={handleCancel}
+          ref={formRef}
+        />
+        <Button
+          type="primary"
+          onClick={toggleVisible}
+          style={{ marginBottom: 5, marginRight: 5 }}
+        >
+          Add New Note
+        </Button>
+        <SearchBar onSearch={setSearchParam} />
+      </div>
+      <div
+        style={{
+          width: "70%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <NoteList
+          searchParam={searchParam}
+          notes={notes.filter(
+            (note) =>
+              note.title.toLowerCase().includes(searchParam.toLowerCase()) ||
+              note.note.toLowerCase().includes(searchParam.toLowerCase())
+          )}
+          onDelete={(id) => deleteNoteAction(id, dispatchNotes)}
+          onClickRow={handleClickRow}
+        />
+      </div>
     </>
   );
 };
