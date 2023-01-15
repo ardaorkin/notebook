@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Note, NoteData, NoteListProps } from "../types";
-import { Button, Card, Col, Row, Skeleton } from "antd";
+import { NoteListProps } from "../types";
+import { Card, Col, Row, Skeleton } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 
 const CardExtra = ({
@@ -8,7 +8,12 @@ const CardExtra = ({
 }: {
   onClick: () => void;
 }): React.ReactElement => {
-  return <DeleteOutlined style={{ fontSize: 18 }} onClick={onClick} />;
+  return (
+    <DeleteOutlined
+      style={{ color: "#f5222d", marginLeft: 10 }}
+      onClick={onClick}
+    />
+  );
 };
 
 export default function NoteList({
