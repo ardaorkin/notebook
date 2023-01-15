@@ -10,7 +10,7 @@ export type NoteListProps = {
   onDelete: (id: number) => void;
   onClickNote: (data: NoteData) => void;
   onAddNewNote: () => void;
-  searchParam?: string;
+  searchParam: string | "";
 };
 
 export type NoteFormProps = {

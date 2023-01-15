@@ -2,6 +2,7 @@ import * as React from "react";
 import { NoteListProps } from "../types";
 import { Card, Col, Row, Skeleton, Space, Typography } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
+import Highlighter from "react-highlight-words";
 
 const CardExtra = ({
   onClick,
@@ -30,7 +31,7 @@ export default function NoteList({
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
 
   React.useEffect(() => {
-    notes && setIsLoading(false);
+    setIsLoading(false);
   }, [notes]);
 
   if (isLoading) return <Skeleton />;
@@ -63,7 +64,11 @@ export default function NoteList({
             className="card"
             onClick={() => onClickNote({ title, note, date, id })}
           >
-            {note}
+            <Highlighter
+              searchWords={[searchParam]}
+              autoEscape={true}
+              textToHighlight={note}
+            />
           </Card>
         </Col>
       ))}
