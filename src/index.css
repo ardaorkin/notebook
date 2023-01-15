@@ -66,5 +66,5 @@ button:focus-visible {
 }
 
 html {
-  overflow: hidden;
+  overflow-x: hidden;
 }
