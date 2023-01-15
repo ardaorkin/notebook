@@ -15,7 +15,6 @@ function NoteForm(
   { onFinish, isVisible, onCancel }: NoteFormProps,
   ref: React.ForwardedRef<FormInstance>
 ) {
-  console.log("form rendering");
   const { Item } = Form;
   const noteRef = useRef<InputRef>(null);
 
