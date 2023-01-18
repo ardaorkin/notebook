@@ -1,25 +1,13 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { INoteCardProps, NoteData } from "./types";
+import { NoteData } from "./types";
 import dayjs, { Dayjs } from "dayjs";
 import { FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
 import { reducer } from "./reducers";
-import {
-  addNoteAction,
-  deleteNoteAction,
-  dropNoteAction,
-  updateNoteAction,
-} from "./reducers/actions";
+import { addNoteAction, deleteNoteAction, dropNoteAction, updateNoteAction } from "./reducers/actions";
 import { useDrop } from "react-dnd";
 
 const App = () => {
@@ -28,14 +16,21 @@ const App = () => {
   const [updateIndex, setUpdateIndex] = useState<number | undefined>(0);
   const [isVisible, toggleVisible] = useReducer((state) => !state, false);
   const [searchParam, setSearchParam] = useState<string>("");
-  const [notes, dispatchNotes] = useReducer(
-    reducer,
-    JSON.parse(localStorage.getItem("notes") || "[]")
-  );
+  const [notes, dispatchNotes] = useReducer(reducer, JSON.parse(localStorage.getItem("notes") || "[]"));
 
   const [collectedProps, drop] = useDrop(() => ({
     accept: "CARD",
-    drop: (item: number, monitor) => dropNoteAction(item, dispatchNotes),
+    drop: (item: { id: number }, monitor) => {
+      const { id } = item;
+      const defaultOffsetObject = { x: 0, y: 0 };
+      const { x } = monitor.getDifferenceFromInitialOffset() || defaultOffsetObject;
+      if (x > 345) {
+        const newIndex = Math.round(x / 345) + id;
+        if (notes[newIndex]) {
+          dropNoteAction({ oldIndex: id, newIndex }, dispatchNotes);
+        }
+      }
+    },
   }));
 
   useEffect(() => {
@@ -52,9 +47,7 @@ const App = () => {
         date: formattedDate,
       };
 
-      isUpdate
-        ? updateNoteAction({ ...noteData, index: updateIndex }, dispatchNotes)
-        : addNoteAction(noteData, dispatchNotes);
+      isUpdate ? updateNoteAction({ ...noteData, index: updateIndex }, dispatchNotes) : addNoteAction(noteData, dispatchNotes);
 
       toggleVisible();
       setIsUpdate(false);
@@ -87,10 +80,7 @@ const App = () => {
       const searchRegex = new RegExp(searchParam, "ig");
       const noteTitle = note.title.toLowerCase();
       const noteContent = note.note.toLowerCase();
-      return (
-        [noteTitle, noteContent].filter((text) => text.match(searchRegex))
-          .length > 0 && note
-      );
+      return [noteTitle, noteContent].filter((text) => text.match(searchRegex)).length > 0 && note;
     });
     return filteredResult;
   }, [searchParam, notes]);
@@ -100,18 +90,9 @@ const App = () => {
       <div style={{ width: 345, marginBottom: 50 }}>
         <SearchBar onSearch={setSearchParam} />
       </div>
-      <NoteForm
-        onFinish={handleFinish}
-        isVisible={isVisible}
-        onCancel={handleCancel}
-        ref={formRef}
-      />
-      <div ref={drop} style={{ width: "100%", height: 500, background: "red" }}>
-        {[].map((noteIndex: number, idx: number) => (
-          <div>{noteIndex}</div>
-        ))}
-      </div>
+      <NoteForm onFinish={handleFinish} isVisible={isVisible} onCancel={handleCancel} ref={formRef} />
       <NoteList
+        ref={drop}
         onAddNewNote={toggleVisible}
         searchParam={searchParam}
         notes={filteredNotes}

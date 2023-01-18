@@ -3,13 +3,7 @@ import { NoteListProps } from "../types";
 import { Card, Col, Row, Skeleton } from "antd";
 import NoteCard from "./NoteCard";
 
-export default function NoteList({
-  notes,
-  onDelete,
-  onClickNote,
-  searchParam,
-  onAddNewNote,
-}: NoteListProps): React.ReactElement {
+function NoteList({ notes, onDelete, onClickNote, searchParam, onAddNewNote }: NoteListProps, ref: React.ForwardedRef<any>): React.ReactElement {
   const [isLoading, setIsLoading] = React.useState<Boolean>(true);
 
   React.useEffect(() => {
@@ -18,7 +12,7 @@ export default function NoteList({
 
   if (isLoading) return <Skeleton />;
   return (
-    <Row gutter={24}>
+    <Row gutter={24} ref={ref}>
       <Col>
         <Card
           bordered
@@ -53,3 +47,5 @@ export default function NoteList({
     </Row>
   );
 }
+
+export default React.forwardRef(NoteList);

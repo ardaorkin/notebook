@@ -12,12 +12,7 @@
 
 h1 {
   font-size: 172px;
-  background: linear-gradient(
-    122deg,
-    rgba(131, 58, 180, 1) 0%,
-    rgba(253, 29, 29, 1) 50%,
-    rgba(252, 176, 69, 1) 100%
-  );
+  background: linear-gradient(122deg, rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 50%, rgba(252, 176, 69, 1) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: lighter;

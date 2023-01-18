@@ -11,13 +11,15 @@ export const reducer = (state: Note[], action: NoteAction): Note[] => {
       copy[index] = rest;
       return copy;
     case DELETE_NOTE:
-      return [
-        ...state.slice(0, action.payload),
-        ...state.slice(action.payload + 1),
-      ];
+      return [...state.slice(0, action.payload), ...state.slice(action.payload + 1)];
     case DROP_NOTE:
-      console.log(action.payload);
-      return state;
+      const { oldIndex, newIndex } = action.payload;
+      const oldElement = { ...state[oldIndex] };
+      const nearestElement = { ...state[newIndex] };
+      const newState = [...state];
+      newState[oldIndex] = nearestElement;
+      newState[newIndex] = oldElement;
+      return newState;
     default:
       return state;
   }
