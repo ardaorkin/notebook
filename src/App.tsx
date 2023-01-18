@@ -9,16 +9,18 @@ import {
 import "./App.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
-import { NoteData } from "./types";
+import { INoteCardProps, NoteData } from "./types";
 import dayjs, { Dayjs } from "dayjs";
-import { Button, FormInstance } from "antd";
+import { FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
 import { reducer } from "./reducers";
 import {
   addNoteAction,
   deleteNoteAction,
+  dropNoteAction,
   updateNoteAction,
 } from "./reducers/actions";
+import { useDrop } from "react-dnd";
 
 const App = () => {
   const formRef = useRef<FormInstance>(null);
@@ -30,6 +32,11 @@ const App = () => {
     reducer,
     JSON.parse(localStorage.getItem("notes") || "[]")
   );
+
+  const [collectedProps, drop] = useDrop(() => ({
+    accept: "CARD",
+    drop: (item: number, monitor) => dropNoteAction(item, dispatchNotes),
+  }));
 
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify([...notes]));
@@ -99,6 +106,11 @@ const App = () => {
         onCancel={handleCancel}
         ref={formRef}
       />
+      <div ref={drop} style={{ width: "100%", height: 500, background: "red" }}>
+        {[].map((noteIndex: number, idx: number) => (
+          <div>{noteIndex}</div>
+        ))}
+      </div>
       <NoteList
         onAddNewNote={toggleVisible}
         searchParam={searchParam}

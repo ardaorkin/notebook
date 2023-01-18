@@ -29,3 +29,13 @@ export type SearchBarProps = {
 };
 
 export type Dispatch = (action: NoteAction) => void;
+
+export interface INoteCardProps {
+  title: string;
+  note: string;
+  date: string;
+  id: number;
+  onClickNote: (data: Note & { id: number }) => void;
+  onDelete: (id: number) => void;
+  searchParam: string;
+}

@@ -1,5 +1,5 @@
 import { Note, NoteAction } from "../types";
-import { ADD_NOTE, DELETE_NOTE, UPDATE_NOTE } from "./actionTypes";
+import { ADD_NOTE, DELETE_NOTE, DROP_NOTE, UPDATE_NOTE } from "./actionTypes";
 
 export const reducer = (state: Note[], action: NoteAction): Note[] => {
   switch (action.type) {
@@ -15,6 +15,9 @@ export const reducer = (state: Note[], action: NoteAction): Note[] => {
         ...state.slice(0, action.payload),
         ...state.slice(action.payload + 1),
       ];
+    case DROP_NOTE:
+      console.log(action.payload);
+      return state;
     default:
       return state;
   }

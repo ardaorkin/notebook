@@ -31,6 +31,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: whitesmoke;
+  background-image: url("./assets/bg.jpg");
 }
 
 button {
