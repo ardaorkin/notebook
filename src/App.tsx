@@ -24,7 +24,7 @@ const App = () => {
       const { id } = item;
       const defaultOffsetObject = { x: 0, y: 0 };
       const { x } = monitor.getDifferenceFromInitialOffset() || defaultOffsetObject;
-      if (x > 345) {
+      if (Math.abs(x) > 10) {
         const newIndex = Math.round(x / 345) + id;
         if (notes[newIndex]) {
           dropNoteAction({ oldIndex: id, newIndex }, dispatchNotes);
