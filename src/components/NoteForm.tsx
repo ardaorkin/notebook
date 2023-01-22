@@ -1,20 +1,9 @@
 import { useEffect, useRef } from "react";
 import * as React from "react";
-import {
-  Button,
-  DatePicker,
-  Form,
-  FormInstance,
-  Input,
-  InputRef,
-  Modal,
-} from "antd";
+import { Button, DatePicker, Form, FormInstance, Input, InputRef, Modal } from "antd";
 import { NoteFormProps } from "../types";
 
-function NoteForm(
-  { onFinish, isVisible, onCancel }: NoteFormProps,
-  ref: React.ForwardedRef<FormInstance>
-) {
+function NoteForm({ onFinish, isVisible, onCancel }: NoteFormProps, ref: React.ForwardedRef<FormInstance>) {
   const { Item } = Form;
   const noteRef = useRef<InputRef>(null);
 
@@ -27,34 +16,17 @@ function NoteForm(
       onCancel={onCancel}
       open={isVisible}
       footer={[
-        <Button
-          form="newNoteForm"
-          key="submit"
-          htmlType="submit"
-          type="primary"
-        >
+        <Button form="newNoteForm" key="submit" htmlType="submit" type="primary">
           Submit
         </Button>,
       ]}
     >
-      <Form
-        ref={ref}
-        id="newNoteForm"
-        onFinish={onFinish}
-        layout="vertical"
-        style={{ marginTop: "5%" }}
-      >
+      <Form ref={ref} id="newNoteForm" onFinish={onFinish} layout="vertical" style={{ marginTop: "5%" }}>
         <Item name="title" rules={[{ required: true }]}>
-          <Input ref={noteRef} maxLength={144} />
+          <Input ref={noteRef} maxLength={144} placeholder="Enter the title" />
         </Item>
         <Item name="note" rules={[{ required: true }]}>
-          <Input.TextArea
-            showCount
-            maxLength={1000}
-            rows={6}
-            spellCheck
-            style={{ resize: "none" }}
-          />
+          <Input.TextArea showCount maxLength={1000} rows={6} spellCheck style={{ resize: "none" }} placeholder="Write the note" />
         </Item>
         <Item name="date" rules={[{ required: true }]}>
           <DatePicker format={"YYYY-MM-DD"} style={{ width: "100%" }} />
