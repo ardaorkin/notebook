@@ -2,7 +2,7 @@ import { Card } from "antd";
 import * as React from "react";
 import { DeleteOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
-import { INoteCardProps, Note } from "../types";
+import { INoteCardProps } from "../types";
 import { useDrag } from "react-dnd";
 
 const CardExtra = ({ onClick }: { onClick: () => void }): React.ReactElement => {
@@ -14,20 +14,26 @@ const CardExtra = ({ onClick }: { onClick: () => void }): React.ReactElement => 
 };
 
 export default function NoteCard({ title, note, date, id, onClickNote, onDelete, searchParam }: INoteCardProps) {
-  const [collected, drag, dragPreview]: [any, any, any] = useDrag(() => ({
+  const [{ isDragging, opacity }, drag, dragPreview]: [any, any, any] = useDrag(() => ({
     type: "CARD",
     item: { id },
+    collect(monitor) {
+      return {
+        opacity: monitor.isDragging() ? 0 : 1,
+      };
+    },
   }));
 
   return (
     <Card
       id={"card-" + id}
-      {...(collected.isDragging ? { ref: dragPreview } : { ref: drag, ...collected })}
+      {...(isDragging ? { ref: dragPreview } : { ref: drag })}
       bordered
       bodyStyle={{ overflowY: "auto", height: "80%" }}
       hoverable
       title={title}
       extra={<CardExtra onClick={() => onDelete(id)} />}
+      style={{ opacity }}
       className="card"
       onClick={() => onClickNote({ title, note, date, id })}
     >
