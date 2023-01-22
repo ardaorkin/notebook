@@ -8,7 +8,8 @@ import { FormInstance } from "antd";
 import SearchBar from "./components/SearchBar";
 import { reducer } from "./reducers";
 import { addNoteAction, deleteNoteAction, dropNoteAction, updateNoteAction } from "./reducers/actions";
-import { useDrop } from "react-dnd";
+import { DropTargetMonitor, useDrop } from "react-dnd";
+import { handleDrop } from "./helpers";
 
 const App = () => {
   const formRef = useRef<FormInstance>(null);
@@ -20,17 +21,7 @@ const App = () => {
 
   const [collectedProps, drop] = useDrop(() => ({
     accept: "CARD",
-    drop: (item: { id: number }, monitor) => {
-      const { id } = item;
-      const defaultOffsetObject = { x: 0, y: 0 };
-      const { x } = monitor.getDifferenceFromInitialOffset() || defaultOffsetObject;
-      if (Math.abs(x) > 10) {
-        const newIndex = Math.round(x / 345) + id;
-        if (notes[newIndex]) {
-          dropNoteAction({ oldIndex: id, newIndex }, dispatchNotes);
-        }
-      }
-    },
+    drop: (item: { id: number }, monitor: DropTargetMonitor) => handleDrop(item, monitor, notes, dispatchNotes),
   }));
 
   useEffect(() => {
