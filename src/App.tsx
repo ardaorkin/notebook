@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import "./App.css";
+import "./resizable.css";
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
 import { NoteData } from "./types";
@@ -19,7 +20,7 @@ const App = () => {
   const [searchParam, setSearchParam] = useState<string>("");
   const [notes, dispatchNotes] = useReducer(reducer, JSON.parse(localStorage.getItem("notes") || "[]"));
 
-  const [collectedProps, drop] = useDrop(() => ({
+  const [, drop] = useDrop(() => ({
     accept: "CARD",
     drop: (item: { id: number }, monitor: DropTargetMonitor) => handleDrop(item, monitor, notes, dispatchNotes),
   }));

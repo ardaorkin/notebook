@@ -1,5 +1,5 @@
 import { DropTargetMonitor } from "react-dnd";
-import { Dispatch, Note } from "../types";
+import { Dispatch, Note, sizes } from "../types";
 import { dropNoteAction } from "../reducers/actions";
 
 export const handleDrop = (item: { id: number }, monitor: DropTargetMonitor, notes: Note[], dispatcher: Dispatch) => {
@@ -13,3 +13,11 @@ export const handleDrop = (item: { id: number }, monitor: DropTargetMonitor, not
     }
   }
 };
+
+export const reduceSizes = (sizes: sizes, reducePx: number): {} =>
+  Object.entries(sizes).reduce((prev, [key, value]) => {
+    if (!prev) {
+      return { [key]: value - reducePx };
+    }
+    return { ...prev, [key]: value - reducePx };
+  }, {});
