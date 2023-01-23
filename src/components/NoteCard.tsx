@@ -17,8 +17,41 @@ const CardExtra = ({ onClick }: { onClick: () => void }): React.ReactElement => 
 };
 
 export default function NoteCard({ title, note, date, id, onClickNote, onDelete, searchParam }: INoteCardProps) {
+  const resizableElementRef = React.useRef<HTMLDivElement>(null!);
+  const [focusedElementID, setFocusedElementID] = React.useState<number | null>(null);
   const [width, setWidth] = React.useState<number>(cardSizePx.width + resizeDiffPx);
   const [height, setHeight] = React.useState<number>(cardSizePx.height + resizeDiffPx);
+
+  React.useEffect(() => {
+    if (resizableElementRef.current) {
+      resizableElementRef.current.addEventListener("focus", () => {
+        if (resizableElementRef.current) setFocusedElementID(resizableElementRef.current.tabIndex);
+      });
+    }
+  }, [resizableElementRef]);
+
+  React.useEffect(() => {
+    if (focusedElementID) {
+      resizableElementRef.current.addEventListener("keypress", (event: KeyboardEvent) => {
+        switch (event.key.toLowerCase()) {
+          case "w":
+            setHeight((prev) => prev - 1);
+            break;
+          case "s":
+            setHeight((prev) => prev + 1);
+            break;
+          case "a":
+            setWidth((prev) => prev - 1);
+            break;
+          case "d":
+            setWidth((prev) => prev + 1);
+            break;
+          default:
+            break;
+        }
+      });
+    }
+  }, [focusedElementID]);
 
   const [{ isDragging, opacity }, drag, dragPreview]: [any, any, any] = useDrag(() => ({
     type: "CARD",
@@ -41,7 +74,7 @@ export default function NoteCard({ title, note, date, id, onClickNote, onDelete,
 
   return (
     <Resizable height={height} width={width} onResize={onResize} className="box">
-      <div style={{ width, height }}>
+      <div style={{ width, height }} ref={resizableElementRef} tabIndex={id}>
         <Card
           id={"card-" + id}
           {...(isDragging ? { ref: dragPreview } : { ref: drag })}
