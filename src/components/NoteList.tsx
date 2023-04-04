@@ -20,6 +20,8 @@ function NoteList({ notes, onDelete, onClickNote, searchParam, onAddNewNote }: N
           hoverable
           className="card"
           style={{
+            width: 345,
+            height: 345,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

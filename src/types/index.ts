@@ -39,3 +39,8 @@ export interface INoteCardProps {
   onDelete: (id: number) => void;
   searchParam: string;
 }
+
+export type sizes = {
+  width: number;
+  height: number;
+};
